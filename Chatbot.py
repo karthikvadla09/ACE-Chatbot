@@ -1,3 +1,4 @@
+#importing all the libraries and scripts
 import nltk
 import random
 import string
@@ -9,6 +10,7 @@ import wikipedia as wk
 from collections import defaultdict
 import warnings
 
+
 nltk.download('omw-1.4')
 nltk.download('averaged_perceptron_tagger')
 
@@ -18,14 +20,15 @@ nltk.download('wordnet')
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity, linear_kernel
 
-data = open("C:\\Users\\akars\\Downloads\\HS.txt", 'r', errors='ignore')
+#importing raw data
+data = open("HS.txt", 'r', errors='ignore')
 raw = data.read()
 raw = raw.lower()
 
 
 sent_tokens = nltk.sent_tokenize(raw)
 
-
+#Praising the content retrieved
 def Normalize(text):
     remove_punct_dict = dict((ord(punct), None) for punct in string.punctuation)
     # word tokenization
@@ -56,17 +59,17 @@ def Normalize(text):
         lemma_list.append(lemma)
     return lemma_list
 
-
+#General input for welcome message
 welcome_input = ("hello", "hi", "greetings", "sup", "what's up", "hey",)
 welcome_response = ["hi", "hey", "nods", "hi there", "hello", "I am glad! You are talking to me"]
 
-
+#Welcome message
 def welcome(user_response):
     for word in user_response.split():
         if word.lower() in welcome_input:
             return random.choice(welcome_response)
 
-
+#Generating response
 def generateResponse(user_response):
     robo_response = ''
     sent_tokens.append(user_response)
@@ -87,7 +90,7 @@ def generateResponse(user_response):
         robo_response = robo_response + sent_tokens[idx]
         return robo_response  # wikipedia search nltk.download('omw-1.4')
 
-
+#searhing the wikipedia
 def wikipedia_data(input):
     reg_ex = re.search('tell me about (.*)', input)
     try:
@@ -117,13 +120,12 @@ def printInput():
                 outputtxt.insert(END, response)
                 sent_tokens.remove(user_response)
 
+#deleting the text
 def delete_text():
     inputtxt.delete("1.0","end")
     outputtxt.delete("1.0","end")
 
-
-#print("My name is Chatterbot and I'm a chatbot. If you want to exit, type Bye!")
-
+#Interface for the chatbot
 root = Tk()
 root.title("Chatbot")
 
@@ -133,25 +135,6 @@ b2 = Button(root, text="DELETE", command=delete_text)
 inputtxt = Text(f1, height=15, width=40)
 outputtxt = Text(f1, height=15, width=40)
 
-
-
-"""while (flag == True):
-    user_response = user_response.lower()
-    if (user_response not in ['bye', 'shutdown', 'exit', 'quit']):
-        if (user_response == 'thanks' or user_response == 'thank you'):
-            flag = False
-            print("Chatterbot : You are welcome..")
-        else:
-            if (welcome(user_response) != None):
-                print("Chatterbot : " + welcome(user_response))
-            else:
-                print("Chatterbot : ", end="")
-                print(generateResponse(user_response))
-                sent_tokens.remove(user_response)
-    else:
-        flag = False
-        print("Chatterbot : Bye!!! ")
-"""
 inputtxt.pack()
 f1.pack()
 outputtxt.pack()
